@@ -19,6 +19,7 @@ export default function RegisterForm({ onRegisterSuccess }) {
       setEmail('');
       setPassword('');
       setTimeout(() => {
+       
         if (onRegisterSuccess) onRegisterSuccess();
       }, 1200);
     } catch (err) {

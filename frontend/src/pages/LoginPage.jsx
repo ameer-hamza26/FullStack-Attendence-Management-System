@@ -25,7 +25,7 @@ export default function LoginPage() {
                 <span className="text-3xl font-bold text-green-600">AttendancePro</span>
                 <p className="text-gray-500 mt-2">Sign in to your account</p>
               </div>
-              <LoginForm />
+      <LoginForm />
               <div className="mt-4 text-center">
                 <span className="text-gray-600">Don't have an account? </span>
                 <button

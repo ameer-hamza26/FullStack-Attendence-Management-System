@@ -1,4 +1,5 @@
 import { useAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
 import MarkAttendanceForm from '../components/MarkAttendanceForm';
 import AttendanceTable from '../components/AttendanceTable';
 import { useEffect, useState } from 'react';
@@ -10,7 +11,12 @@ export default function DashboardPage() {
 
   useEffect(() => {
     getMyAttendance().then(res => setRecords(res.data.attendance));
-  }, [records]);
+  }, []);
+
+  // Redirect admin users to admin panel
+  if (user && user.role === 'admin') {
+    return <Navigate to="/admin" replace />;
+  }
 
   return (
     <div className="pt-20 max-w-3xl mx-auto">
