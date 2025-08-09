@@ -22,7 +22,7 @@ export default function RegisterForm({ onRegisterSuccess }) {
        
         if (onRegisterSuccess) onRegisterSuccess();
       }, 1200);
-    } catch (err) {
+    } catch (err) { 
       setError(err.response?.data?.message || 'Registration failed');
     }
   };

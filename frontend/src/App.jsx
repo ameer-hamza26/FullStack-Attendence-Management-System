@@ -6,6 +6,8 @@ import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './pages/NotFoundPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -40,6 +42,23 @@ function App() {
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          toastStyle={{
+            borderRadius: '12px',
+            fontSize: '14px',
+            fontWeight: '500',
+          }}
+        />
       </BrowserRouter>
     </AuthProvider>
   );

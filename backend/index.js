@@ -51,9 +51,9 @@ app.use('/api/attendance', attendanceRoutes);
 //   });
 // });
 
-const PORT = 8080|| 5001;
+// const PORT = 8080|| 5001;
 
 
-app.listen(PORT, () => {
-  console.log(`Server started on port http://localhost:8080`);
+app.listen(process.env.PORT || 8080, () => {
+  console.log(`Server started on port http://localhost:${process.env.PORT || 8080}`);
 }); 

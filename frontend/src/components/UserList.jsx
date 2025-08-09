@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { getUsers, deleteUser, createUser, updateUser } from '../api/users';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function UserList({ onSelectUser }) {
+export default function UserList({ onSelectUser, onUsersChange }) {
   const [users, setUsers] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddModal,  setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,20 +24,79 @@ export default function UserList({ onSelectUser }) {
     try {
       const res = await getUsers();
       setUsers(res.data.users);
+      // Notify parent component about user changes - only after successful load
+      if (onUsersChange && typeof onUsersChange === 'function') {
+        try {
+          onUsersChange();
+        } catch (callbackError) {
+          console.error('Error in onUsersChange callback:', callbackError);
+        }
+      }
+      // Removed unnecessary success toast for loading users
     } catch (error) {
       console.error('Error loading users:', error);
-      setMessage('Error loading users');
+      toast.error('Failed to load users. Please try again.', {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: {
+          backgroundColor: '#dc2626',
+          color: '#ffffff',
+          fontWeight: '500'
+        }
+      });
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
+    const userToDelete = users.find(u => u._id === id);
+    const userName = userToDelete ? userToDelete.name : 'User';
+    
+    if (window.confirm(`Are you sure you want to delete ${userName}?`)) {
       try {
-    await deleteUser(id);
-        setMessage('User deleted successfully');
+        await deleteUser(id);
+        toast.success('User deleted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          style: {
+            backgroundColor: '#059669',
+            color: '#ffffff',
+            fontWeight: '500'
+          }
+        });
         loadUsers();
+        // Notify parent component about user deletion
+        if (onUsersChange && typeof onUsersChange === 'function') {
+          try {
+            onUsersChange();
+          } catch (callbackError) {
+            console.error('Error in onUsersChange callback:', callbackError);
+          }
+        }
       } catch (error) {
-        setMessage('Error deleting user: ' + error.response?.data?.message);
+        toast.error(`Error deleting user: ${error.response?.data?.message || 'Unknown error'}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          style: {
+            backgroundColor: '#dc2626',
+            color: '#ffffff',
+            fontWeight: '500'
+          }
+        });
       }
     }
   };
@@ -44,16 +104,49 @@ export default function UserList({ onSelectUser }) {
   const handleAdd = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
     
     try {
       await createUser(formData);
       setShowAddModal(false);
       setFormData({ name: '', email: '', password: '', role: 'user' });
-      setMessage('User created successfully');
+      toast.success('User created successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        theme: "colored",
+        style: {
+          backgroundColor: '#059669',
+          color: '#ffffff',
+          fontWeight: '500'
+        }
+      });
+      
       loadUsers();
+      // Notify parent component about user creation
+      if (onUsersChange && typeof onUsersChange === 'function') {
+        try {
+          onUsersChange();
+        } catch (callbackError) {
+          console.error('Error in onUsersChange callback:', callbackError);
+        }
+      }
     } catch (error) {
-      setMessage('Error creating user: ' + error.response?.data?.message);
+      toast.error(`Error creating user: ${error.response?.data?.message || 'Unknown error'}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: {
+          backgroundColor: '#dc2626',
+          color: '#ffffff',
+          fontWeight: '500'
+        }
+      });
     } finally {
       setLoading(false);
     }
@@ -62,17 +155,51 @@ export default function UserList({ onSelectUser }) {
   const handleEdit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
     
     try {
       await updateUser(editingUser._id, formData);
       setShowEditModal(false);
       setEditingUser(null);
       setFormData({ name: '', email: '', password: '', role: 'user' });
-      setMessage('User updated successfully');
+      
+      toast.success('User updated successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        theme: "colored",
+        style: {
+          backgroundColor: '#059669',
+          color: '#ffffff',
+          fontWeight: '500'
+        }
+      });
+      
       loadUsers();
+      // Notify parent component about user update
+      if (onUsersChange && typeof onUsersChange === 'function') {
+        try {
+          onUsersChange();
+        } catch (callbackError) {
+          console.error('Error in onUsersChange callback:', callbackError);
+        }
+      }
     } catch (error) {
-      setMessage('Error updating user: ' + error.response?.data?.message);
+      toast.error(`Error updating user: ${error.response?.data?.message || 'Unknown error'}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: {
+          backgroundColor: '#dc2626',
+          color: '#ffffff',
+          fontWeight: '500'
+        }
+      });
     } finally {
       setLoading(false);
     }
@@ -87,6 +214,25 @@ export default function UserList({ onSelectUser }) {
       role: user.role
     });
     setShowEditModal(true);
+    // Removed unnecessary toast for opening edit modal
+  };
+
+  const openAddModal = () => {
+    setShowAddModal(true);
+    // Removed unnecessary toast for opening add modal
+  };
+
+  const closeAddModal = () => {
+    setShowAddModal(false);
+    setFormData({ name: '', email: '', password: '', role: 'user' });
+    // Removed unnecessary toast for closing modal
+  };
+
+  const closeEditModal = () => {
+    setShowEditModal(false);
+    setEditingUser(null);
+    setFormData({ name: '', email: '', password: '', role: 'user' });
+    // Removed unnecessary toast for closing modal
   };
 
   return (
@@ -97,7 +243,7 @@ export default function UserList({ onSelectUser }) {
           <p className="text-sm text-gray-600 mt-1">Manage user accounts and permissions</p>
         </div>
         <button
-          onClick={() => setShowAddModal(true)}
+          onClick={openAddModal}
           className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,16 +252,6 @@ export default function UserList({ onSelectUser }) {
           Add User
         </button>
       </div>
-
-      {message && (
-        <div className={`mb-4 p-3 rounded-md ${
-          message.includes('Error') 
-            ? 'bg-red-50 text-red-700 border border-red-200' 
-            : 'bg-green-50 text-green-700 border border-green-200'
-        }`}>
-          {message}
-        </div>
-      )}
 
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -128,7 +264,7 @@ export default function UserList({ onSelectUser }) {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-        {users.map(u => (
+            {users.map(u => (
               <tr key={u._id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">{u.name}</div>
@@ -190,7 +326,7 @@ export default function UserList({ onSelectUser }) {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Add New User</h3>
                 <button
-                  onClick={() => setShowAddModal(false)}
+                  onClick={closeAddModal}
                   className="text-gray-400 hover:text-gray-600"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,7 +386,7 @@ export default function UserList({ onSelectUser }) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setShowAddModal(false)}
+                    onClick={closeAddModal}
                     className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
                   >
                     Cancel
@@ -270,7 +406,7 @@ export default function UserList({ onSelectUser }) {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Edit User</h3>
                 <button
-                  onClick={() => setShowEditModal(false)}
+                  onClick={closeEditModal}
                   className="text-gray-400 hover:text-gray-600"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,7 +465,7 @@ export default function UserList({ onSelectUser }) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setShowEditModal(false)}
+                    onClick={closeEditModal}
                     className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
                   >
                     Cancel

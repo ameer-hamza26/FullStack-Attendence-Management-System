@@ -8,7 +8,7 @@ export default function MarkAttendanceForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await markAttendance(status);
+      await markAttendance(status); 
       setMessage('Attendance marked!');
     } catch (err) {
       setMessage(err.response?.data?.message || 'Error');
