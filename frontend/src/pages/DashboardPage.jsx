@@ -11,7 +11,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     getMyAttendance().then(res => setRecords(res.data.attendance));
-  }, []);
+  }, [records]);
 
   // Redirect admin users to admin panel
   if (user && user.role === 'admin') {

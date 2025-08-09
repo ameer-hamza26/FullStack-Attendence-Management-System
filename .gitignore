@@ -1,0 +1,149 @@
+# ========================================
+# ATTENDANCE MANAGEMENT SYSTEM - ROOT GITIGNORE
+# ========================================
+
+# Environment Variables (CRITICAL - NEVER COMMIT THESE!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Node.js Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+build/
+dist/
+.next/
+.nuxt/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.vite/
+.rollup.cache/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Temporary folders
+tmp/
+temp/
+
+# Database files (if running locally)
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL certificates and keys
+*.pem
+*.key
+*.crt
+*.csr
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+
+# Docker files (optional)
+# docker-compose.override.yml
+
+# Local development files
+local/
+dev/
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# PM2 process manager
+.pm2/
+
+# Documentation build
+docs/build/
+
+# Test coverage
+.nyc_output/
+
+# Yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ========================================
+# PROJECT SPECIFIC EXCLUSIONS
+# ========================================
+
+# Backend specific
+backend/.env
+backend/node_modules/
+backend/build/
+backend/dist/
+backend/logs/
+backend/data/
+
+# Frontend specific
+frontend/.env
+frontend/.env.local
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.vite/
+
+# ========================================
+# SECURITY NOTES
+# ========================================
+# This .gitignore ensures that:
+# 1. Environment variables (.env files) are NEVER committed
+# 2. Node modules are excluded (they should be installed via package.json)
+# 3. Build artifacts are excluded
+# 4. Sensitive data like database files and SSL certificates are protected
+# 5. IDE and OS specific files are ignored
+#
+# REMEMBER: Always double-check that your .env file is listed here
+# before committing any changes!
+# ======================================== 
