@@ -15,7 +15,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://your-frontend-project.vercel.app', // Replace with your actual frontend domain
+    'https://full-stack-attendence-management-sy.vercel.app/', // Replace with your actual frontend domain
     process.env.FRONTEND_URL // You can also use environment variable
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
