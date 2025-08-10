@@ -13,7 +13,11 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: '*',
+  origin: [
+    'http://localhost:5173',
+    'https://your-frontend-project.vercel.app', // Replace with your actual frontend domain
+    process.env.FRONTEND_URL // You can also use environment variable
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -42,18 +46,5 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
 
-// Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error('Error:', err.stack);
-//   res.status(500).json({ 
-//     success: false, 
-//     message: 'Something went wrong!' 
-//   });
-// });
-
-// const PORT = 8080|| 5001;
-
-
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`Server started on port http://localhost:${process.env.PORT || 8080}`);
-}); 
+// Export the app for Vercel (remove app.listen)
+export default app; 
