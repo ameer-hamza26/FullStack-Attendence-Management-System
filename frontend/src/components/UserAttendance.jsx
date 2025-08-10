@@ -46,11 +46,24 @@ export default function UserAttendance({ userId }) {
   }, [userId]);
 
   if (loading) {
-    return <div className="text-center py-4 text-gray-500">Loading attendance...</div>;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="text-gray-500 text-sm">Loading attendance records...</div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="w-full">
+      <div className="mb-4">
+        <h4 className="text-lg font-semibold text-gray-900 mb-2">User Attendance Records</h4>
+        <p className="text-sm text-gray-600">
+          Total records: <span className="font-medium text-gray-900">{records.length}</span>
+        </p>
+      </div>
       <AttendanceTable records={records} />
     </div>
   );
