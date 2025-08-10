@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const baseURL = 'https://full-stack-attendence-management-sy-gules.vercel.app/api';
+
+console.log('API Base URL:', baseURL);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://full-stack-attendence-management-sy-gules.vercel.app/api',
+  baseURL: baseURL,
 });
 
 api.interceptors.request.use((config) => {
