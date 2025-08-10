@@ -15,7 +15,8 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://full-stack-attendence-management-sy.vercel.app', // Remove trailing slash
+    'https://full-stack-attendence-management-sy.vercel.app',
+    'https://full-stack-attendence-management-system-bir8qtiwe.vercel.app', // New frontend URL
     process.env.FRONTEND_URL
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
