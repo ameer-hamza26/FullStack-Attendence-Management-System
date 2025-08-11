@@ -15,13 +15,11 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://full-stack-attendence-management-sy.vercel.app',
-    'https://full-stack-attendence-management-system-bir8qtiwe.vercel.app', // New frontend URL
-    process.env.FRONTEND_URL
+    'https://full-stack-attendence-management-sy.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // Add this for cookies/auth headers
+  credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
