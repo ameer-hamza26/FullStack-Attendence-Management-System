@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-const baseURL = (import.meta?.env?.VITE_API_BASE_URL || 'https://full-stack-attendence-management-system-758m-ayxyrj6rc.vercel.app/api');
+// Use environment variable for API base URL
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+
+// Debug logging for development
+if (import.meta.env.DEV) {
+  console.log('[DEV] API Base URL:', baseURL);
+  console.log('[DEV] Environment:', import.meta.env.MODE);
+}
 
 const api = axios.create({
   baseURL

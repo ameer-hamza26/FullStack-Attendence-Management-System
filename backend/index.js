@@ -12,33 +12,13 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-const allowedOrigins = new Set([
-  'http://localhost:5173',
-  'https://full-stack-attendence-management-sy.vercel.app',
-  process.env.FRONTEND_URL
-].filter(Boolean));
-
-function isAllowedPreviewOrigin(origin) {
-  try {
-    const { hostname } = new URL(origin);
-    // Allow preview deployments for this frontend project only
-    return hostname.endsWith('.vercel.app') && hostname.startsWith('full-stack-attendence-management-sy');
-  } catch {
-    return false;
-  }
-}
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.has(origin) || isAllowedPreviewOrigin(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'));
-  },
+  origin: [
+    'http://localhost:5173',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true,
-  optionsSuccessStatus: 200
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 // Explicitly handle preflight
@@ -64,21 +44,19 @@ app.get('/api/auth/test', (req, res) => {
 });
 
 // Mount API routes
-// Compatibility shim: remap requests missing /api prefix
-app.use((req, res, next) => {
-  if (
-    req.path.startsWith('/auth/') ||
-    req.path.startsWith('/users/') ||
-    req.path.startsWith('/attendance/')
-  ) {
-    req.url = `/api${req.url}`;
-  }
-  next();
-});
-
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err.stack);
+  res.status(500).json({ 
+    success: false, 
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+  });
+});
 
 // Export the app for Vercel
 export default app; 
